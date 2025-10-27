@@ -122,8 +122,8 @@
             <h2>Connecting Farmers Directly to Buyers</h2>
             <p>Eliminate middlemen, get fair prices for your produce, and connect directly with wholesalers, retailers, and households.</p>
             <div class="hero-buttons">
-                <a href="#" class="btn btn-secondary">I'm a Farmer</a>
-                <a href="#" class="btn btn-outline" style="background-color: rgba(255,255,255,0.2); color: white; border-color: white;">I'm a Buyer</a>
+                <a href="#" class="btn btn-secondary" id="heroFarmerBtn">I'm a Farmer</a>
+                <a href="#" class="btn btn-outline" style="background-color: rgba(255,255,255,0.2); color: white; border-color: white;" id="heroBuyerBtn">I'm a Buyer</a>
             </div>
         </div>
     </section>
@@ -424,6 +424,40 @@
                 if (event.target == signupModal) {
                     signupModal.style.display = "none";
                 }
+            }
+
+            // Handle hero section buttons
+            const heroFarmerBtn = document.getElementById('heroFarmerBtn');
+            const heroBuyerBtn = document.getElementById('heroBuyerBtn');
+
+            heroFarmerBtn.onclick = function(e) {
+                e.preventDefault();
+                signupModal.style.display = "flex";
+                // Hide all forms first
+                [farmerLoginForm, buyerLoginForm, farmerSignupForm, buyerSignupForm].forEach(form => {
+                    form.style.display = 'none';
+                });
+                // Show farmer signup form directly
+                farmerSignupForm.style.display = 'flex';
+                // Hide user type selection
+                document.querySelectorAll('.user-type-selection').forEach(selection => {
+                    selection.style.display = 'none';
+                });
+            }
+
+            heroBuyerBtn.onclick = function(e) {
+                e.preventDefault();
+                signupModal.style.display = "flex";
+                // Hide all forms first
+                [farmerLoginForm, buyerLoginForm, farmerSignupForm, buyerSignupForm].forEach(form => {
+                    form.style.display = 'none';
+                });
+                // Show buyer signup form directly
+                buyerSignupForm.style.display = 'flex';
+                // Hide user type selection
+                document.querySelectorAll('.user-type-selection').forEach(selection => {
+                    selection.style.display = 'none';
+                });
             }
 
             // Handle user type selection
