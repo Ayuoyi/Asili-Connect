@@ -360,5 +360,196 @@
             </div>
         </div>
     </footer>
+    </footer>
+    
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('main-nav').classList.toggle('active');
+        });
+
+        // Modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginBtn = document.getElementById("loginBtn");
+            const signupBtn = document.getElementById("signupBtn");
+            const loginModal = document.getElementById("loginModal");
+            const signupModal = document.getElementById("signupModal");
+            const closeLogin = document.getElementById("closeLogin");
+            const closeSignup = document.getElementById("closeSignup");
+            const openSignup = document.getElementById("openSignup");
+            const openLogin = document.getElementById("openLogin");
+            
+            // Open login modal
+            loginBtn.onclick = function(e) {
+                e.preventDefault();
+                loginModal.style.display = "flex";
+            }
+            
+            // Open signup modal
+            signupBtn.onclick = function(e) {
+                e.preventDefault();
+                signupModal.style.display = "flex";
+            }
+
+            // Close login modal
+            closeLogin.onclick = function() {
+                loginModal.style.display = "none";
+            }
+
+            // Close signup modal
+            closeSignup.onclick = function() {
+                signupModal.style.display = "none";
+            }
+
+            // Switch to signup
+            openSignup.onclick = function(e) {
+                e.preventDefault();
+                loginModal.style.display = "none";
+                signupModal.style.display = "flex";
+            }
+
+            // Switch to login
+            openLogin.onclick = function(e) {
+                e.preventDefault();
+                signupModal.style.display = "none";
+                loginModal.style.display = "flex";
+            }
+
+            // Close modals when clicking outside
+            window.onclick = function(event) {
+                if (event.target == loginModal) {
+                    loginModal.style.display = "none";
+                }
+                if (event.target == signupModal) {
+                    signupModal.style.display = "none";
+                }
+            }
+
+            // Handle hero section buttons
+            const heroFarmerBtn = document.getElementById('heroFarmerBtn');
+            const heroBuyerBtn = document.getElementById('heroBuyerBtn');
+
+            heroFarmerBtn.onclick = function(e) {
+                e.preventDefault();
+                signupModal.style.display = "flex";
+                // Hide all forms first
+                [farmerLoginForm, buyerLoginForm, farmerSignupForm, buyerSignupForm].forEach(form => {
+                    form.style.display = 'none';
+                });
+                // Show farmer signup form directly
+                farmerSignupForm.style.display = 'flex';
+                // Hide user type selection
+                document.querySelectorAll('.user-type-selection').forEach(selection => {
+                    selection.style.display = 'none';
+                });
+            }
+
+            heroBuyerBtn.onclick = function(e) {
+                e.preventDefault();
+                signupModal.style.display = "flex";
+                // Hide all forms first
+                [farmerLoginForm, buyerLoginForm, farmerSignupForm, buyerSignupForm].forEach(form => {
+                    form.style.display = 'none';
+                });
+                // Show buyer signup form directly
+                buyerSignupForm.style.display = 'flex';
+                // Hide user type selection
+                document.querySelectorAll('.user-type-selection').forEach(selection => {
+                    selection.style.display = 'none';
+                });
+            }
+
+            // Handle user type selection
+            const userTypeBtns = document.querySelectorAll('.user-type-btn');
+            const farmerLoginForm = document.getElementById('farmerLoginForm');
+            const buyerLoginForm = document.getElementById('buyerLoginForm');
+            const farmerSignupForm = document.getElementById('farmerSignupForm');
+            const buyerSignupForm = document.getElementById('buyerSignupForm');
+
+            userTypeBtns.forEach(btn => {
+                btn.onclick = function() {
+                    const type = this.getAttribute('data-type');
+                    const isSignup = this.closest('#signupModal') !== null;
+                    
+                    // Hide all forms first
+                    [farmerLoginForm, buyerLoginForm, farmerSignupForm, buyerSignupForm].forEach(form => {
+                        form.style.display = 'none';
+                    });
+                    
+                    // Show the appropriate form
+                    if (isSignup) {
+                        if (type === 'farmer') {
+                            farmerSignupForm.style.display = 'flex';
+                        } else {
+                            buyerSignupForm.style.display = 'flex';
+                        }
+                        this.closest('.user-type-selection').style.display = 'none';
+                    } else {
+                        if (type === 'farmer') {
+                            farmerLoginForm.style.display = 'flex';
+                        } else {
+                            buyerLoginForm.style.display = 'flex';
+                        }
+                        this.closest('.user-type-selection').style.display = 'none';
+                    }
+                }
+            });
+
+            // Handle back to selection buttons
+            const backButtons = document.querySelectorAll('.back-to-selection');
+            backButtons.forEach(btn => {
+                btn.onclick = function() {
+                    // Hide all forms
+                    [farmerLoginForm, buyerLoginForm, farmerSignupForm, buyerSignupForm].forEach(form => {
+                        form.style.display = 'none';
+                    });
+                    // Show the user type selection
+                    const selections = document.querySelectorAll('.user-type-selection');
+                    selections.forEach(selection => {
+                        selection.style.display = 'flex';
+                    });
+                }
+            });
+
+            // Handle form submissions
+            const forms = document.querySelectorAll('.modal-form');
+            forms.forEach(form => {
+                form.onsubmit = function(e) {
+                    e.preventDefault();
+                    const formId = this.id;
+                    // Here you would normally handle the form submission with different logic for each form type
+                    console.log(`Form submitted: ${formId}`);
+                    
+                    // Simulate successful login/signup
+                    alert(`Successfully ${formId.includes('Login') ? 'logged in' : 'registered'} as ${formId.includes('farmer') ? 'Farmer' : 'Buyer'}`);
+                    
+                    // Close the modal
+                    loginModal.style.display = "none";
+                    signupModal.style.display = "none";
+                    
+                    // Reset the forms
+                    this.reset();
+                    document.querySelectorAll('.user-type-selection').forEach(selection => {
+                        selection.style.display = 'flex';
+                    });
+                    [farmerLoginForm, buyerLoginForm, farmerSignupForm, buyerSignupForm].forEach(form => {
+                        form.style.display = 'none';
+                    });
+                }
+            });
+
+            // Example of dynamic pricing update (simulated)
+            setInterval(function() {
+                // In a real app, this would fetch from an API
+                const priceElements = document.querySelectorAll('.price');
+                if (priceElements.length > 0) {
+                    // Just a simulation - in reality this would be actual market data
+                    const randomChange = (Math.random() * 0.1 - 0.05).toFixed(2);
+                    console.log(`Market price fluctuation: ${randomChange > 0 ? '+' : ''}${randomChange}%`);
+                }
+            }, 30000); // Update every 30 seconds
+        });
+    </script>
+
 </body>
 </html>
